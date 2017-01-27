@@ -2,7 +2,10 @@ from collections import namedtuple
 from functools import partial
 from datetime import datetime
 
-import simplejson as json
+try:
+    import simplejson as json
+except ImportError:
+    import json
 
 
 TYPE_ATTR = '__type__'
@@ -23,6 +26,8 @@ def _datetime_fromdict(dict_):
 def _default(obj):
     if isinstance(obj, datetime):
         return _datetime_asdict(obj)
+    if hasattr(obj, '_asdict'):
+        return obj._asdict()
     raise TypeError(repr(obj) + " is not JSON serializable")
 
 
