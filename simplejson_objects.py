@@ -9,20 +9,20 @@ TYPE_ATTR = '__type__'
 TIMESTAMP_ATTR = 'timestamp'
 
 
-def _serialize_datetime(obj):
+def _datetime_asdict(obj):
     return {
         TYPE_ATTR: datetime.__name__,
         TIMESTAMP_ATTR: obj.timestamp()
     }
 
 
-def _deserialize_datetime(dict_):
+def _datetime_fromdict(dict_):
     return datetime.fromtimestamp(dict_[TIMESTAMP_ATTR])
 
 
 def _default(obj):
     if isinstance(obj, datetime):
-        return _serialize_datetime(obj)
+        return _datetime_asdict(obj)
     raise TypeError(repr(obj) + " is not JSON serializable")
 
 
@@ -30,7 +30,7 @@ def _object_hook(json_object):
     if TYPE_ATTR in json_object:
         type_name = json_object.pop(TYPE_ATTR)
         if type_name == datetime.__name__:
-            return _deserialize_datetime(json_object)
+            return _datetime_fromdict(json_object)
         type_ = namedtuple(type_name, json_object.keys())
         return type_(**json_object)
     return json_object
