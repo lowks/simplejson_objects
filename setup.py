@@ -4,6 +4,7 @@ from setuptools import setup
 setup(
     name='simplejson_objects',
     version='0.0.3',
+    description='Objects serialization extension for simplejson',
     py_modules=['simplejson_objects'],
     zip_safe=False,
     install_requires=['simplejson'],
