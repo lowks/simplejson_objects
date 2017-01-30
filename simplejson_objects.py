@@ -61,7 +61,7 @@ class SerializableMixin:
         """
         res = loads(json_data)
         assert res.__class__.__name__ == cls.__name__
-        return cls(**res.__dict__)
+        return cls(**res._asdict())
 
     def dumps(self):
         return dumps(self)
